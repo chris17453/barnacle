@@ -1,0 +1,18 @@
+# start from an official image
+FROM python:2.7
+
+# arbitrary location choice: you can change the directory
+RUN mkdir -p /web
+WORKDIR /web
+
+# install our two dependencies
+RUN pip install gunicorn 
+
+# copy our project code
+COPY  barnicle /web/
+
+# expose the port 8000
+EXPOSE 8000
+
+# define the default command to run when starting the container
+CMD ["gunicorn", "--chdir", "barnicle", "--bind", ":8000", "cli.serve:application"]

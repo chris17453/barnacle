@@ -1,0 +1,26 @@
+version: '3'
+
+services:
+  barnacle:
+    build: .
+    volumes:
+      - .:/web
+    ports:
+      - 8000:8000
+    networks:
+      - nginx_network
+
+  nginx:
+      image: nginx:1.13
+      ports:
+        - 8000:80
+      volumes:
+        - ./config/nginx/conf.d:/etc/nginx/conf.d
+      depends_on:
+        - barnacle
+      networks:
+        - nginx_network
+        
+networks:  
+  nginx_network:
+    driver: bridge
